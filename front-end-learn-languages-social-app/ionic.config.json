@@ -1,0 +1,7 @@
+{
+  "name": "front-end-learn-languages-social-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

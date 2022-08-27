@@ -1,3 +1,36 @@
-<p>
-  popover works!
-</p>
+<ion-card>
+  <ion-card-header-ion-grid>
+      <ion-grid>
+        <ion-row class="ion-align-items-center ion-jutify-content-center">
+          <ion-col size="auto">
+            <ion-avatar>
+              <ion-img src="../../../../../assets/sidali.jpg">
+              </ion-img>
+            </ion-avatar>
+          </ion-col>
+          <ion-col>
+            <ion-card-title>Sidali Assoul</ion-card-title>
+            <ion-col-subtitle>Full Stack Developer</ion-col-subtitle>
+
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-button expand="block" size="small" fill="outline" color="primary">View Profile</ion-button>
+  </ion-card-header-ion-grid>
+  <ion-card-content>
+    <ion-card-subtitle color="dark">Account</ion-card-subtitle>
+    <p class="ion-padding-top">Stting & Privacy</p>
+    <p class="ion-padding-top">Help</p>
+    <p class="ion-padding-top">Language</p>
+  </ion-card-content>
+  <div class="item-devider"></div>
+  <ion-card-content>
+    <ion-card-subtitle color="dark">Manage</ion-card-subtitle>
+    <p class="ion-padding-top">Posts Activities</p>
+    <p class="ion-padding-top">Job Posting Account</p>
+  </ion-card-content>
+  <div class="item-devider"></div>
+  <ion-card-content>
+    <p (click)="onSignOut()">Sign Out</p>
+  </ion-card-content>
+</ion-card>

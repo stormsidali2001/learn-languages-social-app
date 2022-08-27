@@ -3,3 +3,7 @@ export class CreatePostDTO{
     body?:string;
     createdAt?:Date;
 }
+export class UpdatePostDTO{
+    body?:string;
+    createdAt?:Date;
+}

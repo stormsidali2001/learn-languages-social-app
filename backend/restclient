@@ -1,0 +1,18 @@
+
+POST http://localhost:8080/api/feed
+Content-Type:application/json
+
+{
+    "body":"this is a post body 2"
+}
+###
+GET  http://localhost:8080/api/feed
+###
+PUT  http://localhost:8080/api/feed/1
+Content-Type:application/json
+
+{
+    "body":"this is a post body 2 edited!"
+}
+###
+DELETE  http://localhost:8080/api/feed/1

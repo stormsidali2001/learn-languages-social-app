@@ -9,7 +9,7 @@ import { FeedModule } from './feed/feed.module';
   imports: [
     ConfigModule.forRoot({isGlobal:true}),
     TypeOrmModule.forRoot({
-    database:'postgres',
+    type:'postgres',
     url:process.env.DATABASE_URL,
     autoLoadEntities:true,
     synchronize:true

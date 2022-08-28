@@ -9,6 +9,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ProfileSummaryComponent } from './components/profile-summary/profile-summary.component';
 import { StartPostComponent } from './components/start-post/start-post.component';
 import { AdvertisingComponent } from './components/advertising/advertising.component';
+import { ModalComponent } from './components/start-post/modal/modal.component';
 
 
 @NgModule({
@@ -16,8 +17,9 @@ import { AdvertisingComponent } from './components/advertising/advertising.compo
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+
   ],
-  declarations: [HomePage,HeaderComponent,ProfileSummaryComponent,StartPostComponent,AdvertisingComponent]
+  declarations: [HomePage,HeaderComponent,ProfileSummaryComponent,StartPostComponent,AdvertisingComponent,ModalComponent]
 })
 export class HomePageModule {}

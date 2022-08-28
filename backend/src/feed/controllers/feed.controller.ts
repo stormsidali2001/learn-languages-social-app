@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { from, Observable } from "rxjs";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { CreatePostDTO, UpdatePostDTO } from "../models/post.dto";
@@ -15,15 +15,16 @@ export class FeedController{
     }
 
     @Get()
-    findAll():Observable<FeedPostEntity[]>{
-        return from(this.feedService.findAll());
+    findAll(@Query('offset') offset:number = 0, @Query('limit') limit:number = 10):Observable<FeedPostEntity[]>{
+        limit = limit > 20 ? 20 :limit;    
+        return this.feedService.findAll(offset,limit);
     }
     @Put(":id")
     updatePost(@Param('id') id:number,@Body() feedPost:UpdatePostDTO):Observable<UpdateResult>{
-        return from(this.feedService.updatePost(id,feedPost))
+        return this.feedService.updatePost(id,feedPost);
     }
     @Delete(':id')
     deletePost(@Param('id') id:number):Observable<DeleteResult>{
-        return from(this.feedService.deletePost(id));
+        return this.feedService.deletePost(id);
     }
 }

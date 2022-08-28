@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { from, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreatePostDTO, UpdatePostDTO } from '../models/post.dto';
 import { FeedPostEntity } from '../models/post.entity';
@@ -13,8 +13,16 @@ export class FeedService {
     createPost(feedPost:CreatePostDTO):Observable<FeedPostEntity>{
         return from(this.feedPostRepository.save(feedPost));
     }
-    findAll():Observable<FeedPostEntity[]>{
-        return from(this.feedPostRepository.find());
+    findAll(offset:number = 0 ,limit:number = 10):Observable<FeedPostEntity[]>{
+        return from(
+            this.feedPostRepository.findAndCount({skip:offset,take:limit})
+            ).pipe(
+                map(
+                    ([posts,count]: [FeedPostEntity[], number])=>{
+                        return posts;
+                    }
+                )
+            )
     }
     updatePost(id:number,feedPost:UpdatePostDTO):Observable<UpdateResult>{
         return from(this.feedPostRepository.update(id,{...feedPost}))

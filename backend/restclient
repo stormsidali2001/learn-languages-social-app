@@ -6,7 +6,7 @@ Content-Type:application/json
     "body":"this is a post body 2"
 }
 ###
-GET  http://localhost:8080/api/feed
+GET  http://localhost:8080/api/feed?limit=1&offset=1
 ###
 PUT  http://localhost:8080/api/feed/1
 Content-Type:application/json

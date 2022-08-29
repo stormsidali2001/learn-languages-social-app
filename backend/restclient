@@ -9,7 +9,7 @@ Content-Type:application/json
 }
 ###
 GET  http://localhost:8080/api/feed
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoiYXNzb3Vsc2lkYWxpMUBnbWFpbC5jb20iLCJpYXQiOjE2NjE4MTIyMDR9.jz-lKVCKoZ6NcbmW2lu8Q-7aC8IzzJQaizJOyji2FXw
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiYXNzb3Vsc2lkYWxpMkBnbWFpbC5jb20iLCJpYXQiOjE2NjE4MTcwNzd9.Q-KAjBIqUEJEf2kPfHCKTo5k6rpUOR7OsvboIYAxjLs
 ###
 PUT  http://localhost:8080/api/feed/1
 Content-Type:application/json
@@ -27,14 +27,15 @@ Content-Type:application/json
 {
     "firstName":"sidali1",
     "lastName":"Assoul1",
-    "email":"assoulsidali1@gmail.com",
-    "password":"123456"
+    "email":"assoulsidali3@gmail.com",
+    "password":"123456",
+    "role":"admin"
 }
 ###
 POST http://localhost:8080/api/auth/login
 Content-Type:application/json
 
 {
-    "email":"assoulsidali1@gmail.com",
+    "email":"assoulsidali2@gmail.com",
     "password":"123456"
 }

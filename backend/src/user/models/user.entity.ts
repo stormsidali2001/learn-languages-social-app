@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { FeedPostEntity } from "src/feed/models/post.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from "./role.enum";
 
 
 @Entity('users')
-export class User{
+export class UserEntity{
     @PrimaryGeneratedColumn()
     id:number;
 
@@ -23,6 +24,11 @@ export class User{
     })
     role:Role;
 
-    
+    //relations
+
+    @OneToMany(type=>FeedPostEntity,f=>f.users)
+    feedPost:FeedPostEntity;
+
+
 
 }

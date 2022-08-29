@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LogginInterceptor } from './common/logingInterceptor.interceptor';
 import { FeedModule } from './feed/feed.module';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -16,7 +18,11 @@ import { FeedModule } from './feed/feed.module';
     autoLoadEntities:true,
     synchronize:true
   }),
-    FeedModule],
+    FeedModule,
+    AuthModule,
+    UserModule
+  
+  ],
   controllers: [AppController],
   providers: [AppService,
       {

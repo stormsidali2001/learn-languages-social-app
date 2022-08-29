@@ -8,7 +8,7 @@ import { NgForm } from '@angular/forms';
 })
 export class AuthPage implements OnInit {
   @ViewChild('form') form:NgForm;
-  submissionType:'login'|'join' = 'login';
+  submissionType:'login'|'join' = 'join';
   constructor() { }
 
   ngOnInit() {

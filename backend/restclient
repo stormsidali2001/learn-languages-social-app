@@ -3,10 +3,10 @@ POST http://localhost:8080/api/feed
 Content-Type:application/json
 
 {
-    "body":"this is a post body 2"
+    "body":"this is a post body 25"
 }
 ###
-GET  http://localhost:8080/api/feed?limit=1&offset=1
+GET  http://localhost:8080/api/feed?limit=5&offset=0
 ###
 PUT  http://localhost:8080/api/feed/1
 Content-Type:application/json

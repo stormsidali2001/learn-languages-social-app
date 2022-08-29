@@ -1,21 +1,19 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LogginInterceptor } from './common/logingInterceptor.interceptor';
 import { FeedModule } from './feed/feed.module';
 import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './core/entities/user.entity';
-import { FeedPostEntity } from './core/entities/post.entity';
-
+import { HttpExceptionFilter } from './common/ExceptionFilter.filter';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal:true}),
     TypeOrmModule.forRoot({
     type:'postgres',
     url:process.env.DATABASE_URL,
-    entities:[UserEntity,FeedPostEntity],
-    // synchronize:true
+    autoLoadEntities:true,
+    synchronize:true
   }),
     FeedModule,
     AuthModule,
@@ -25,6 +23,10 @@ import { FeedPostEntity } from './core/entities/post.entity';
       {
         provide:APP_INTERCEPTOR,
         useClass:LogginInterceptor
+      },
+      {
+        provide:APP_FILTER,
+        useClass:HttpExceptionFilter
       }
   ],
 })

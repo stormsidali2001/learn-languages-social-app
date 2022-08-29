@@ -1,6 +1,6 @@
 import { FeedPostEntity } from "./post.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from "../../auth/models/role.enum";
+import { Role } from "../dtos/role.enum";
 
 
 @Entity('users')
@@ -12,7 +12,7 @@ export class UserEntity{
     email:string;
 
     @Column()
-    passwordHash:string;
+    password:string;
 
     @Column()
     firstName:string;
@@ -28,7 +28,6 @@ export class UserEntity{
     role:Role;
 
     //relations
-
     @OneToMany(type=>FeedPostEntity,f=>f.author)
     feedPosts:FeedPostEntity[];
 

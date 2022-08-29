@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { from, Observable } from "rxjs";
 import { DeleteResult, UpdateResult } from "typeorm";
-import { CreatePostDTO, UpdatePostDTO } from "../models/post.dto";
+import { CreatePostDTO, UpdatePostDTO } from "../../core/dtos/post.dto";
 import { FeedPostEntity } from "../../core/entities/post.entity";
 import { FeedService } from "../services/feed.service";
 

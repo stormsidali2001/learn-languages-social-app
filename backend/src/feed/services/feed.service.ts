@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { from, map, Observable } from 'rxjs';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { CreatePostDTO, UpdatePostDTO } from '../models/post.dto';
+import { CreatePostDTO, UpdatePostDTO } from '../../core/dtos/post.dto';
 import { FeedPostEntity } from '../../core/entities/post.entity';
 
 @Injectable()

@@ -11,7 +11,7 @@ export class LogginInterceptor implements NestInterceptor{
         const then = Date.now();
         return next.handle().pipe(
             tap(
-               ()=>Logger.log(`request: ${method} ${url} ${body} ${Date.now() - then}ms`,context.getClass().name+'/'+context.getHandler().name)
+               ()=>Logger.log(`request: ${method} ${url} ${JSON.stringify(body)} ${Date.now() - then}ms`,context.getClass().name+'/'+context.getHandler().name)
             )
         )
         

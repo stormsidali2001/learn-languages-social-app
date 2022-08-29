@@ -13,6 +13,6 @@ export class FeedPostEntity{
     createdAt:Date;
 
     //relations 
-    @ManyToOne(type=>UserEntity,p=>p.feedPost)
-    users:UserEntity[];
+    @ManyToOne(type=>UserEntity,p=>p.feedPosts)
+    author:UserEntity;
 }

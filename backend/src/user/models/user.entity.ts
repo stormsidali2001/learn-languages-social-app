@@ -26,8 +26,8 @@ export class UserEntity{
 
     //relations
 
-    @OneToMany(type=>FeedPostEntity,f=>f.users)
-    feedPost:FeedPostEntity;
+    @OneToMany(type=>FeedPostEntity,f=>f.author)
+    feedPosts:FeedPostEntity[];
 
 
 

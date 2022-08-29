@@ -14,7 +14,17 @@ export class AuthPage implements OnInit {
   ngOnInit() {
   }
   onSubmit(){
+    const {email,password} = this.form.value;
+    if(!email || !password) return;
+    if(this.submissionType === 'login') {
+      console.log('login: ',{email,password})
+    }
+    else if (this.submissionType === 'join') {
+      const {firstName,lastName} = this.form.value;
+      console.log('join: ',{firstName,lastName,email,password})
+      if(!firstName || !lastName) return;
 
+    }
   }
   toggleText(){
     if(this.submissionType === 'login') this.submissionType = 'join';

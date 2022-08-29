@@ -15,27 +15,35 @@ export class AllPostsComponent implements OnInit {
   allLoadedPosts:Post[] = [];
   numberOfPosts = 5;
   offset = 0;
+  counter = 1
   
   constructor(private postService:PostService) { }
 
   ngOnInit() {
-    this.getPosts(true,null)
+     this.getPosts(null)
   }
-  getPosts(isInitialLoad:boolean,event){
-    if(this.offset === 20){
+  getPosts(event){
+    console.log('counter',this.counter,event,event?.target)
+    this.counter++;
+    if(this.offset === 25){
       event.target.disabled = true;
     }
     this.postService.getSelectedPosts({offset:this.offset,limit:this.numberOfPosts}).subscribe((posts:Post[])=>{
       this.allLoadedPosts = [...this.allLoadedPosts,...posts];
-      if(isInitialLoad) event.target.complete;
-      this.offset+=5;
+      if(event){ 
+        event.target.complete()
+        console.log("completed!!!")
+      }
+      this.offset+=this.numberOfPosts;
+
     },err=>{
       console.log(err)
     })
 
   }
   loadData(event){
-    this.getPosts(false,event)
+    console.log(event)
+    this.getPosts(event)
   }
 
 }

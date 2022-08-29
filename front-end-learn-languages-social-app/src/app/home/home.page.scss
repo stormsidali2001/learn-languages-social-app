@@ -4,8 +4,29 @@
 }
 .content-container{
     display: flex;
-    width: 1128px;
+ 
     margin: 40px auto;
+    justify-content: center;
+    margin-top: 0;
+
+        width:min(100%,1128px);
+        @media (min-width: 576px) {
+            width: 576px;
+        }
+        @media (min-width: 1280px) {
+            width: 1128px;
+        }
+    app-profile-summary{
+        flex: 1;
+
+    }
+    .middle-section{
+        flex: 2;
+    }
+    app-advertising{
+        flex:1;
+    }
+    
 }
 app-all-posts ,.post-divider{
     margin: 0 12px;

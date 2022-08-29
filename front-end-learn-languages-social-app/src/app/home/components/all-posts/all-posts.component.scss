@@ -1,7 +1,6 @@
 .all-posts-container{
     display: flex;
     ion-content{
-        border: 1px solid red;
         height: calc(100vh - 320px);
         ion-list{
             background-color: #f3f2ef;
@@ -9,7 +8,8 @@
             ion-card{
                 box-shadow: none;
                 border: #e1e1e1;
-                width: 518px;
+                width: 100%;
+             
                 .full-name{
                     font-weight: 500;
                 }

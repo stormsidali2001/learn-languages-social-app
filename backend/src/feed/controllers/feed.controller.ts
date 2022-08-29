@@ -5,6 +5,9 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { CreatePostDTO, UpdatePostDTO } from "../../core/dtos/post.dto";
 import { FeedPostEntity } from "../../core/entities/post.entity";
 import { FeedService } from "../services/feed.service";
+import { Roles } from "src/auth/decorators/hasroles.decorator";
+import { Role } from "src/core/dtos/role.enum";
+import { RolesGuard } from "src/auth/guards/Roles.guard";
 
 
 @Controller('feed')
@@ -15,7 +18,8 @@ export class FeedController{
        return from(this.feedService.createPost(feedPost));
     }
 
-    @UseGuards(AccessTokenJwtGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(AccessTokenJwtGuard,RolesGuard)
     @Get()
     findAll(@Query('offset') offset:number = 0, @Query('limit') limit:number = 10):Observable<FeedPostEntity[]>{
         limit = limit > 20 ? 20 :limit;    

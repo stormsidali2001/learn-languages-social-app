@@ -1,6 +1,6 @@
 import { Role } from "./role.enum";
 
-export class registerUserDTO{
+export class RegisterUserDTO{
     firstName?:string;
     lastName?:string;
     email?:string;

@@ -6,6 +6,7 @@ import { LogginInterceptor } from './common/logingInterceptor.interceptor';
 import { FeedModule } from './feed/feed.module';
 import { AuthModule } from './auth/auth.module';
 import { HttpExceptionFilter } from './common/ExceptionFilter.filter';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal:true}),
@@ -17,6 +18,7 @@ import { HttpExceptionFilter } from './common/ExceptionFilter.filter';
   }),
     FeedModule,
     AuthModule,
+    UserModule
   
   ],
   providers: [

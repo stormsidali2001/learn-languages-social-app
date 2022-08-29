@@ -5,9 +5,9 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { CreatePostDTO, UpdatePostDTO } from "../../core/dtos/post.dto";
 import { FeedPostEntity } from "../../core/entities/post.entity";
 import { FeedService } from "../services/feed.service";
-import { Roles } from "src/auth/decorators/hasroles.decorator";
-import { Role } from "src/core/dtos/role.enum";
-import { RolesGuard } from "src/auth/guards/Roles.guard";
+import { Roles } from "../../auth/decorators/hasroles.decorator";
+import { Role } from "../../core/dtos/role.enum";
+import { RolesGuard } from "../../auth/guards/Roles.guard";
 
 
 @Controller('feed')

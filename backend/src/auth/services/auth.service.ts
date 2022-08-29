@@ -7,13 +7,14 @@ import { UserEntity } from '../../core/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { UserService } from '../../user/user.service';
 
 @Injectable()
 export class AuthService{
     constructor(
-        @InjectRepository(UserEntity) private readonly userRepository:Repository<UserEntity>,
         private readonly jwtService:JwtService,
-        private readonly configService:ConfigService
+        private readonly configService:ConfigService,
+        private readonly userService:UserService,
         ){}
     hashPassword(password:string):Observable<string>{
         return from(bcrypt.hash(password,12));
@@ -22,11 +23,11 @@ export class AuthService{
         return from(bcrypt.compare(password,passwordDb));
     }
     registerUser(user:RegisterUserDTO):Observable<UserEntity>{
-        const {email,password,firstName,lastName} = user;
+        const {email,password,firstName,lastName,role} = user;
         return this.hashPassword(password).pipe(
             switchMap((passwordHash:string)=>{
-                const userDb = this.userRepository.create({email,firstName,lastName,password:passwordHash}); 
-                return from(this.userRepository.save(userDb)).pipe(
+                const userDb = <UserEntity>{email,firstName,lastName,password:passwordHash,role} 
+                return from(this.userService.create(userDb)).pipe(
                     map((user)=>{
                         delete user.password;
                         return user;
@@ -37,7 +38,7 @@ export class AuthService{
         )
     }
     validateUser(email:string,password:string):Observable<UserEntity>{
-        return from(this.userRepository.findOne({where:{email},select:['id','email','password']})).pipe(
+        return from(this.userService.findUserBy({where:{email},select:['id','email','password']})).pipe(
             switchMap((user:UserEntity)=>{
                 if(!user){
                     throw new ForbiddenException("user not found");

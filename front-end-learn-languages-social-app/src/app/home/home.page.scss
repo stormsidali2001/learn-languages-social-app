@@ -1,6 +1,8 @@
 :host{ /* refer to the home component where its hosted (in this case route-outlet)*/
     //flex already applied
-    justify-content: start; //default is space-between
+    justify-content: flex-start; //default is space-between
+    min-height: 100vh;
+
 }
 .content-container{
     display: flex;
@@ -36,3 +38,7 @@ app-all-posts ,.post-divider{
     border-bottom:1px solid rgb(212, 208, 208);
 }
 
+
+app-tabs{
+    margin-top: auto;
+}

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FeedController } from './controllers/feed.controller';
-import { FeedPostEntity } from './models/post.entity';
+import { FeedPostEntity } from '../core/entities/post.entity';
 import { FeedService } from './services/feed.service';
 
 @Module({

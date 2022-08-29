@@ -1,6 +1,6 @@
-import { FeedPostEntity } from "src/feed/models/post.entity";
+import { FeedPostEntity } from "./post.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from "./role.enum";
+import { Role } from "../../auth/models/role.enum";
 
 
 @Entity('users')
@@ -10,6 +10,9 @@ export class UserEntity{
 
     @Column({unique:true})
     email:string;
+
+    @Column()
+    passwordHash:string;
 
     @Column()
     firstName:string;
@@ -28,7 +31,5 @@ export class UserEntity{
 
     @OneToMany(type=>FeedPostEntity,f=>f.author)
     feedPosts:FeedPostEntity[];
-
-
 
 }

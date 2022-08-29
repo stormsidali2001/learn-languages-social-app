@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { from, Observable } from "rxjs";
+import { AccessTokenJwtGuard } from "../../auth/guards/access-token-jwt-guard";
 import { DeleteResult, UpdateResult } from "typeorm";
 import { CreatePostDTO, UpdatePostDTO } from "../../core/dtos/post.dto";
 import { FeedPostEntity } from "../../core/entities/post.entity";
@@ -14,6 +15,7 @@ export class FeedController{
        return from(this.feedService.createPost(feedPost));
     }
 
+    @UseGuards(AccessTokenJwtGuard)
     @Get()
     findAll(@Query('offset') offset:number = 0, @Query('limit') limit:number = 10):Observable<FeedPostEntity[]>{
         limit = limit > 20 ? 20 :limit;    

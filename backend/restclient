@@ -4,10 +4,12 @@ POST http://localhost:8080/api/feed
 Content-Type:application/json
 
 {
-    "body":"this is a post body 25"
+    "body":"this is a post body 30",
+    "authorId":1
 }
 ###
-GET  http://localhost:8080/api/feed?limit=5&offset=5
+GET  http://localhost:8080/api/feed
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoiYXNzb3Vsc2lkYWxpMUBnbWFpbC5jb20iLCJpYXQiOjE2NjE4MTIyMDR9.jz-lKVCKoZ6NcbmW2lu8Q-7aC8IzzJQaizJOyji2FXw
 ###
 PUT  http://localhost:8080/api/feed/1
 Content-Type:application/json

@@ -11,7 +11,11 @@ export class FeedService {
        @InjectRepository(FeedPostEntity) private readonly feedPostRepository:Repository<FeedPostEntity>
     ){}
     createPost(feedPost:CreatePostDTO):Observable<FeedPostEntity>{
-        return from(this.feedPostRepository.save(feedPost));
+        const {authorId,body} = feedPost;
+        return from(this.feedPostRepository.save({
+            body,
+            author:{id:authorId}
+        }));
     }
     findAll(offset:number = 0 ,limit:number = 10):Observable<FeedPostEntity[]>{
         return from(

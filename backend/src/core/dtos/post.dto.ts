@@ -1,8 +1,6 @@
 export class CreatePostDTO{
-    id?:number;
-    body?:string;
-    createdAt?:Date;
-    authorId?:number;
+    body:string;
+    authorId:number;
 }
 export class UpdatePostDTO{
     body?:string;

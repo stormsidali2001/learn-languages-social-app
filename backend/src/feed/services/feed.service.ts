@@ -19,11 +19,12 @@ export class FeedService {
     }
     findAll(offset:number = 0 ,limit:number = 10):Observable<FeedPostEntity[]>{
         return from(
-            this.feedPostRepository.findAndCount({skip:offset,take:limit})
+            this.feedPostRepository.findAndCount({skip:offset,take:limit,relations:['author']})
             ).pipe(
                 map(
                     ([posts,count]: [FeedPostEntity[], number])=>{
-                        return posts;
+                        //  posts.forEach(p=>p.author && delete p.author.password)
+                         return posts;
                     }
                 )
             )

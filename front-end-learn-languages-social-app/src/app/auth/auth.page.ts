@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CreateUser } from './models/create-user.model';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
@@ -12,7 +13,7 @@ import { AuthService } from './services/auth.service';
 export class AuthPage implements OnInit {
   @ViewChild('form') form:NgForm;
   submissionType:'login'|'join' = 'join';
-  constructor(private authService:AuthService) { }
+  constructor(private authService:AuthService,private router:Router) { }
 
   ngOnInit() {
   }
@@ -22,7 +23,8 @@ export class AuthPage implements OnInit {
     if(this.submissionType === 'login') {
       console.log('login: ',{email,password});
       this.authService.login(email,password).subscribe(()=>{
-        alert('done')
+        this.router.navigateByUrl('/home');
+
       })
     }
     else if (this.submissionType === 'join') {

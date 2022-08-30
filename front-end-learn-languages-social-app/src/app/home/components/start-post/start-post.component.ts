@@ -1,6 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { EventEmitter } from 'stream';
+import { EventEmitter } from '@angular/core'
 import { ModalComponent } from './modal/modal.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { ModalComponent } from './modal/modal.component';
   styleUrls: ['./start-post.component.scss'],
 })
 export class StartPostComponent implements OnInit {
-  @Output() create:EventEmitter = new EventEmitter();
+  @Output() create = new EventEmitter()
   constructor(public modalController:ModalController) { }
 
   ngOnInit() {}

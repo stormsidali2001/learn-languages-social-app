@@ -9,6 +9,7 @@ Content-Type:application/json
 }
 ###
 GET  http://localhost:8080/api/feed
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InN1YiI6NiwiZW1haWwiOiJhc3NvdWxzaWRhbGkxQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiZmlyc3ROYW1lIjoic2lkYWxpMSIsImxhc3ROYW1lIjoiQXNzb3VsMSJ9LCJpYXQiOjE2NjE4ODUzMjQsImV4cCI6MTY2MjYwNTMyNH0.klpwZSzeFlf1-KTHMaaH2B4HELiCBS3GyUzJ-aAgmTg
 
 ###
 PUT  http://localhost:8080/api/feed/28

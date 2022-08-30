@@ -19,14 +19,12 @@ export class FeedService {
     }
     findAll(offset:number = 0 ,limit:number = 10):Observable<FeedPostEntity[]>{
         return from(
-            this.feedPostRepository.findAndCount({skip:offset,take:limit,relations:['author']})
-            ).pipe(
-                map(
-                    ([posts,count]: [FeedPostEntity[], number])=>{
-                        //  posts.forEach(p=>p.author && delete p.author.password)
-                         return posts;
-                    }
-                )
+            this.feedPostRepository.createQueryBuilder('post')
+            .innerJoinAndSelect('post.author','author')
+            .orderBy('post.createdAt','DESC')
+            .take(limit)
+            .skip(offset)
+            .getMany()
             )
     }
     updatePost(id:number,feedPost:UpdatePostDTO):Observable<UpdateResult>{

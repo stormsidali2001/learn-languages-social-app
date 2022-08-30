@@ -14,6 +14,7 @@ import { IsCreatorGuard } from "../guards/is-creator.guard";
 @Controller('feed')
 export class FeedController{
     constructor(private readonly feedService:FeedService){}
+    @UseGuards(AccessTokenJwtGuard)
     @Post()
     create(@Body() feedPost:CreatePostDTO):Observable<FeedPostEntity>{
        return from(this.feedService.createPost(feedPost));
@@ -21,6 +22,7 @@ export class FeedController{
 
     // @Roles(Role.ADMIN)
     // @UseGuards(AccessTokenJwtGuard,RolesGuard)
+    @UseGuards(AccessTokenJwtGuard)
     @Get()
     findAll(@Query('offset') offset:number = 0, @Query('limit') limit:number = 10):Observable<FeedPostEntity[]>{
         limit = limit > 20 ? 20 :limit;    

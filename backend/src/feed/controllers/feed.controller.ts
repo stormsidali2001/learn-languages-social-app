@@ -8,6 +8,7 @@ import { FeedService } from "../services/feed.service";
 import { Roles } from "../../auth/decorators/hasroles.decorator";
 import { Role } from "../../core/dtos/role.enum";
 import { RolesGuard } from "../../auth/guards/Roles.guard";
+import { IsCreatorGuard } from "../guards/is-creator.guard";
 
 
 @Controller('feed')
@@ -25,6 +26,7 @@ export class FeedController{
         limit = limit > 20 ? 20 :limit;    
         return this.feedService.findAll(offset,limit);
     }
+    @UseGuards(AccessTokenJwtGuard,IsCreatorGuard)
     @Put(":id")
     updatePost(@Param('id') id:number,@Body() feedPost:UpdatePostDTO):Observable<UpdateResult>{
         return this.feedService.updatePost(id,feedPost);

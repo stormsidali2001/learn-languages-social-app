@@ -38,7 +38,7 @@ export class AuthService{
         )
     }
     validateUser(email:string,password:string):Observable<UserEntity>{
-        return from(this.userService.findUserBy({where:{email},select:['id','email','password']})).pipe(
+        return from(this.userService.findUserBy({where:{email},select:['id','email','password','role','firstName','lastName']})).pipe(
             switchMap((user:UserEntity)=>{
                 if(!user){
                     throw new ForbiddenException("user not found");
@@ -58,7 +58,8 @@ export class AuthService{
         const {email,password} = user;
         return this.validateUser(email,password).pipe(
             switchMap((user:UserEntity)=>{
-                return from(this.jwtService.signAsync({sub:user.id,email:user.email,role:user.role},{secret:this.configService.get('JWT_SECRET')})).pipe(
+                console.log(user)
+                return from(this.jwtService.signAsync({sub:user.id,email:user.email,role:user.role,firstName:user.firstName,lastName:user.lastName},{secret:this.configService.get('JWT_SECRET')})).pipe(
                     map((jwt:string)=>({access_token:jwt}))
                 )
             }),

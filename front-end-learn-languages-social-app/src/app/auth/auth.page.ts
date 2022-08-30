@@ -20,7 +20,10 @@ export class AuthPage implements OnInit {
     const {email,password} = this.form.value;
     if(!email || !password) return;
     if(this.submissionType === 'login') {
-      console.log('login: ',{email,password})
+      console.log('login: ',{email,password});
+      this.authService.login(email,password).subscribe(()=>{
+        alert('done')
+      })
     }
     else if (this.submissionType === 'join') {
       const {firstName,lastName} = this.form.value;

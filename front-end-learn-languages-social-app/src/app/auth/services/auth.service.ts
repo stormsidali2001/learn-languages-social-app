@@ -67,6 +67,7 @@ export class AuthService {
             value:response.access_token
         });
           const decodedToken:UserResponse = jwt_decode(response.access_token);
+          console.log(decodedToken)
           this.userS.next(decodedToken.user);
         })
       )

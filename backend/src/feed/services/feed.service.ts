@@ -10,8 +10,8 @@ export class FeedService {
     constructor(
        @InjectRepository(FeedPostEntity) private readonly feedPostRepository:Repository<FeedPostEntity>
     ){}
-    createPost(feedPost:CreatePostDTO):Observable<FeedPostEntity>{
-        const {authorId,body} = feedPost;
+    createPost(feedPost:CreatePostDTO,authorId:number):Observable<FeedPostEntity>{
+        const {body} = feedPost;
         return from(this.feedPostRepository.save({
             body,
             author:{id:authorId}

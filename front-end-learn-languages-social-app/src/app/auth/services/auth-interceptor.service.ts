@@ -11,6 +11,7 @@ export class AuthInterceptorService implements HttpInterceptor{
 
   constructor() { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('intercept ...')
     return  from(Preferences.get({key:'token'})).pipe(
       switchMap((data:{value:string})=>{
           const token = data.value;

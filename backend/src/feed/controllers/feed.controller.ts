@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from "@nestjs/common";
 import { from, Observable } from "rxjs";
 import { AccessTokenJwtGuard } from "../../auth/guards/access-token-jwt-guard";
 import { DeleteResult, UpdateResult } from "typeorm";
@@ -9,6 +9,7 @@ import { Roles } from "../../auth/decorators/hasroles.decorator";
 import { Role } from "../../core/dtos/role.enum";
 import { RolesGuard } from "../../auth/guards/Roles.guard";
 import { IsCreatorGuard } from "../guards/is-creator.guard";
+import { Request } from "express";
 
 
 @Controller('feed')
@@ -16,8 +17,9 @@ export class FeedController{
     constructor(private readonly feedService:FeedService){}
     @UseGuards(AccessTokenJwtGuard)
     @Post()
-    create(@Body() feedPost:CreatePostDTO):Observable<FeedPostEntity>{
-       return from(this.feedService.createPost(feedPost));
+    create(@Body() feedPost:CreatePostDTO,@Req() req:Request):Observable<FeedPostEntity>{
+    //@ts-ignore
+       return from(this.feedService.createPost(feedPost,req.user.sub));
     }
 
     // @Roles(Role.ADMIN)

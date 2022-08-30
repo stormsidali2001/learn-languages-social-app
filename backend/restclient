@@ -27,9 +27,9 @@ Content-Type:application/json
 {
     "firstName":"sidali1",
     "lastName":"Assoul1",
-    "email":"assoulsidali3@gmail.com",
+    "email":"assoulsidali7@gmail.com",
     "password":"123456",
-    "role":"admin"
+    "role":"premium"
 }
 ###
 POST http://localhost:8080/api/auth/login

@@ -14,4 +14,8 @@ export class UserService{
     create(user:UserEntity){
        return from(this.userRepository.save(user));
     }
+
+    findAll():Observable<UserEntity[]>{
+        return from(this.userRepository.find());
+    }
 }

@@ -19,8 +19,8 @@ export class FeedController{
        return from(this.feedService.createPost(feedPost));
     }
 
-    @Roles(Role.ADMIN)
-    @UseGuards(AccessTokenJwtGuard,RolesGuard)
+    // @Roles(Role.ADMIN)
+    // @UseGuards(AccessTokenJwtGuard,RolesGuard)
     @Get()
     findAll(@Query('offset') offset:number = 0, @Query('limit') limit:number = 10):Observable<FeedPostEntity[]>{
         limit = limit > 20 ? 20 :limit;    

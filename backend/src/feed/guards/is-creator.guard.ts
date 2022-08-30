@@ -1,5 +1,5 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { from, map, Observable } from 'rxjs';
+import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
+import { from, map, Observable, of, switchMap } from 'rxjs';
 import { Role } from '../../core/dtos/role.enum';
 import { FeedPostEntity } from '../../core/entities/post.entity';
 import { UserEntity } from '../../core/entities/user.entity';
@@ -21,13 +21,15 @@ export class IsCreatorGuard implements CanActivate {
     if(!user || !params) return false;
 
     return from(this.userService.findUserBy({where:{id:user.sub}})).pipe(
-      map((userDb:UserEntity)=>{
+      switchMap((userDb:UserEntity)=>{
           if(userDb.role === Role.ADMIN){
-            return true;
+            return of(true);
           }
-          this.feedPostService.findByIdAndAuthor(params.id,user.sub).pipe(
+          Logger.warn(`not admin  ${JSON.stringify(userDb)}`,'debugggggggggg')
+          return this.feedPostService.findByIdAndAuthor(params.id,user.sub).pipe(
             map(
               (post:FeedPostEntity)=>{
+                Logger.warn(`post ${JSON.stringify(post)}`,'debugggggggggg')
                 if(post) return true
                 else return false; 
               }

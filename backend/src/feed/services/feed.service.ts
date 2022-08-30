@@ -36,4 +36,12 @@ export class FeedService {
         return from(this.feedPostRepository.delete(id));
     }
 
+    findByIdAndAuthor(postId:number,authorId:number):Observable<FeedPostEntity>{
+        return from(
+            this.feedPostRepository.createQueryBuilder('post')
+            .where('post.id = :postId and post.authorId = :authorId',{authorId,postId})
+            .getOne()
+        )
+    }
+
 }

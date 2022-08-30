@@ -31,6 +31,8 @@ export class FeedController{
     updatePost(@Param('id') id:number,@Body() feedPost:UpdatePostDTO):Observable<UpdateResult>{
         return this.feedService.updatePost(id,feedPost);
     }
+
+    @UseGuards(AccessTokenJwtGuard,IsCreatorGuard)
     @Delete(':id')
     deletePost(@Param('id') id:number):Observable<DeleteResult>{
         return this.feedService.deletePost(id);

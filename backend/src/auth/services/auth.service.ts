@@ -58,7 +58,7 @@ export class AuthService{
         const {email,password} = user;
         return this.validateUser(email,password).pipe(
             switchMap((user:UserEntity)=>{
-                return from(this.jwtService.signAsync({sub:user.id,email:user.email},{secret:this.configService.get('JWT_SECRET')})).pipe(
+                return from(this.jwtService.signAsync({sub:user.id,email:user.email,role:user.role},{secret:this.configService.get('JWT_SECRET')})).pipe(
                     map((jwt:string)=>({access_token:jwt}))
                 )
             }),

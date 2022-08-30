@@ -2,11 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@capacitor/core/dist';
-import { BehaviorSubject, Observable } from 'rxjs';
-import {take, tap} from 'rxjs/operators'
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import {switchMap, take, tap} from 'rxjs/operators'
 import { environment } from 'src/environments/environment';
 import { CreateUser } from '../models/create-user.model';
-import { User } from '../models/user.model';
+import { Role, User } from '../models/user.model';
 import { UserResponse } from '../models/user.reponse';
 import jwt_decode from 'jwt-decode';
 import { Preferences } from '@capacitor/preferences';
@@ -29,24 +29,47 @@ export class AuthService {
       private http:HttpClient , 
       private router:Router
     ) { }
-  register(newUser:CreateUser):Observable<User>{
-    return this.http.post<User>(`${environment.baseApiUrl}/auth/register`,newUser,this.httpOptions).pipe(
-      take(1)
-    )
-  }
-  login(email:string,password:string):Observable<{access_token:string}>{
-    return this.http.post<{access_token:string}>(`${environment.baseApiUrl}/auth/login`,{email,password},this.httpOptions).pipe(
-      take(1),
-      tap((response:{access_token:string})=>{
-       
-         Preferences.set({
-          key:'token',
-          value:response.access_token
-       });
-         const decodedToken:UserResponse = jwt_decode(response.access_token);
-         this.userS.next(decodedToken.user);
-      })
-    )
-  }
+    
+    get isUserLoggedIn():Observable<boolean>{
+      return this.userS.asObservable()
+      .pipe(
+        switchMap(
+          (user:User)=>{
+            const isUserAuthenticated:boolean = user !== null;
+            return of(isUserAuthenticated);
+          }
+        )
+      )
+    }
+    get getUserRole():Observable<Role>{
+      return this.userS.asObservable()
+      .pipe(
+        switchMap(
+          (user:User)=>{
+            return of(user.role)
+          }
+        )
+      )
+    }
+
+    register(newUser:CreateUser):Observable<User>{
+      return this.http.post<User>(`${environment.baseApiUrl}/auth/register`,newUser,this.httpOptions).pipe(
+        take(1)
+      )
+    }
+    login(email:string,password:string):Observable<{access_token:string}>{
+      return this.http.post<{access_token:string}>(`${environment.baseApiUrl}/auth/login`,{email,password},this.httpOptions).pipe(
+        take(1),
+        tap((response:{access_token:string})=>{
+        
+          Preferences.set({
+            key:'token',
+            value:response.access_token
+        });
+          const decodedToken:UserResponse = jwt_decode(response.access_token);
+          this.userS.next(decodedToken.user);
+        })
+      )
+    }
 
 }

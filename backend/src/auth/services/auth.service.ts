@@ -59,7 +59,7 @@ export class AuthService{
         return this.validateUser(email,password).pipe(
             switchMap((user:UserEntity)=>{
                 console.log(user)
-                return from(this.jwtService.signAsync({sub:user.id,email:user.email,role:user.role,firstName:user.firstName,lastName:user.lastName},{secret:this.configService.get('JWT_SECRET')})).pipe(
+                return from(this.jwtService.signAsync({user:{sub:user.id,email:user.email,role:user.role,firstName:user.firstName,lastName:user.lastName}},{secret:this.configService.get('JWT_SECRET'),expiresIn:200*60*60})).pipe(
                     map((jwt:string)=>({access_token:jwt}))
                 )
             }),

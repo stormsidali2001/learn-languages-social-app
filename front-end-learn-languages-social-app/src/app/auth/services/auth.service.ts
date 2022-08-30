@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@capacitor/core/dist';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
-import {switchMap, take, tap} from 'rxjs/operators'
+import {map, switchMap, take, tap} from 'rxjs/operators'
 import { environment } from 'src/environments/environment';
 import { CreateUser } from '../models/create-user.model';
 import { Role, User } from '../models/user.model';
@@ -71,6 +71,26 @@ export class AuthService {
           this.userS.next(decodedToken.user);
         })
       )
+    }
+    isTokenInStorage():Observable<boolean>{
+       return from(Preferences.get({key:'token'})).pipe(
+        map((data:{value:string})=>{
+          console.log(data)
+          if(!data || !data.value) return null;
+
+          const decondedToken:UserResponse =  jwt_decode(data.value)
+          console.log("decoded jwt",decondedToken)
+          const jwtExpiration = decondedToken.exp*1000;
+          const isExpired = new Date() > new Date(jwtExpiration);
+          console.log('isExpired',isExpired,'decoded user',decondedToken.user)
+          if(isExpired) return null;
+          if(decondedToken.user){
+            console.log('new userS' , decondedToken)
+            this.userS.next(decondedToken.user);
+            return true;
+          }
+        })
+       )
     }
     logout():void{
         this.userS.next(null);

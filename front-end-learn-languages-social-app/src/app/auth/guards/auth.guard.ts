@@ -16,14 +16,13 @@ export class AuthGuard implements CanLoad {
       switchMap((isUserLoggedIn:boolean)=>{
         console.log(isUserLoggedIn)
           if(isUserLoggedIn) return of(isUserLoggedIn);
-
+          return this.authService.isTokenInStorage();
       }),
       tap(
         (isUserLoggedIn:boolean)=>{
           if(!isUserLoggedIn){
             this.router.navigateByUrl('/auth');
           }
-
       }
       )
       

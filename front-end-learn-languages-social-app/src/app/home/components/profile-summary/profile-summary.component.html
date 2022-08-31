@@ -6,7 +6,8 @@
     <div class="background-three" [style.background]="bannerColors.color2"></div>
   </div>
   <ion-card-header class="ion-text-center">
-    <ion-avatar class="ion-margin-auto">
+    <input #fileUpload (change)="onFileSelect($event)" type="file" style="display:none;" />
+    <ion-avatar (click)="fileUpload.click()" style="cursor:pointer" class="ion-margin-auto">
       <ion-img src="../../../../assets/sidali.jpg"></ion-img>
     </ion-avatar>
     <ion-card-title class="ion-margin-top">

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { take } from 'rxjs/operators';
+import { fromBuffer ,FileTypeResult} from 'file-type/core';
+import { from, of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 import { Role } from 'src/app/auth/models/user.model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
@@ -75,7 +77,31 @@ export class ProfileSummaryComponent implements OnInit {
     
     const formData = new FormData();
     formData.append('file',file);
-    
+    from(file.arrayBuffer())
+    .pipe(
+      switchMap((buffer:Buffer)=>{
+        return  from(fromBuffer(buffer)).pipe(
+          switchMap(
+            (fileTypeResult:FileTypeResult)=>{
+              if(!fileTypeResult){
+                console.log({error:'file format not supported'})
+                return of();
+              }
+              const {ext,mime} = fileTypeResult;
+              const safe = this.validFileExtensions.includes(<ValidFileExtension>ext) 
+                          && 
+                          this.validMimeTypes.includes(<ValidMimeType>mime);
+              if(!safe){
+                console.log({error:'file format does not match file extension'})
+                return of();
+              }
+              return this.authService.uploadUserImage(formData);
+            }
+          )
+        )
+      })
+    ).subscribe();
+    this.form.reset();
 
   }
 

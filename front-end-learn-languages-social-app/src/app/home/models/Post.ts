@@ -4,5 +4,10 @@ export interface Post{
     id:number;
     body:string;
     createdAt:Date;
-    author:User;
+    author:{
+        firstName:string;
+        lastName:string;
+        id:number;
+        imagePath:string;
+    };
 }

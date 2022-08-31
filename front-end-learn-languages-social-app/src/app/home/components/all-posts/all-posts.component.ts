@@ -34,12 +34,15 @@ export class AllPostsComponent implements OnInit {
   ngOnInit() {
      this.userSubscription = this.authService.userStream.subscribe(
       (user:User)=>{
+
         this.allLoadedPosts.forEach((post:Post,index:number)=>{
           //if the user changes his profil picture for example the update should be shown instantly
-          if(user?.imagePath && post.author.sub === user.sub){
+        
+          if(user?.imagePath && post.author['id'] === user.sub){
             this.allLoadedPosts[index]['fullImagePath'] = this.authService.getFullImagePath(user.imagePath);
           }
         })
+        console.log(user,this.allLoadedPosts)
       }
      )
 

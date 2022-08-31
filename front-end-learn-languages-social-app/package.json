@@ -26,6 +26,7 @@
     "@capacitor/preferences": "^4.0.1",
     "@capacitor/status-bar": "4.0.1",
     "@ionic/angular": "^6.1.9",
+    "file-type": "16.5.1",
     "jwt-decode": "^3.1.2",
     "rxjs": "~6.6.0",
     "stream": "^0.0.2",

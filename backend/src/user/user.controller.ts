@@ -1,10 +1,9 @@
-import { Controller, Get, Post, Req, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Controller, Get, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { Request } from "express";
 import { join } from "path";
 import { from, Observable, of, switchMap } from "rxjs";
-import { AccessTokenJwtGuard } from "src/auth/guards/access-token-jwt-guard";
-import { UserEntity } from "src/core/entities/user.entity";
+import { AccessTokenJwtGuard } from "../auth/guards/access-token-jwt-guard";
+import { UserEntity } from "../core/entities/user.entity";
 import { UpdateResult } from "typeorm";
 import { UserService } from "./user.service";
 import { imageStorageConfig, isFileExtensionSafe, removeFile } from "./utils/image-storage.config";
@@ -41,5 +40,18 @@ export class UserController{
             })
         )
     }
+    @UseGuards(AccessTokenJwtGuard)
+    @Get('image')
+    findProfileImage(@Req() req , @Res() res):Observable<Object>{
+        const userId = req.user.sub;
+
+        return this.userService.findProfileImagePath(userId).pipe(
+            switchMap((imagePath:string)=>{
+                return of(res.sendFile(imagePath,{root:'./images'}))
+            })
+        )
+    }
+
+
 }
 

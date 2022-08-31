@@ -27,6 +27,12 @@ export class UserEntity{
     })
     role:Role;
 
+    @Column({
+        nullable:true,
+
+    })
+    imagePath:string;
+
     //relations
     @OneToMany(type=>FeedPostEntity,f=>f.author)
     feedPosts:FeedPostEntity[];

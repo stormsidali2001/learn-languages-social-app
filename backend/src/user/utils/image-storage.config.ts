@@ -6,7 +6,7 @@ const FileType = require('file-type');
 
 import path  = require('path');
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
-import { from, Observable, switchMap } from "rxjs";
+import { from, Observable, of, switchMap } from "rxjs";
 
 type ValidFileExtension = 'png' | 'jpg' | 'jpeg';
 type ValidMimeType = `image/${ValidFileExtension}`;
@@ -37,11 +37,21 @@ export const imageStorageConfig:MulterOptions = {
 }
 
 export const isFileExtensionSafe =(path):Observable<boolean>=>{
-    return from<boolean>(FileType.fromFile(path)).pipe(
+    return from(FileType.fromFile(path)).pipe(
         switchMap(
-            (fileExtAndMimeType)=>{
+            (fileExtAndMimeType:{ext:ValidFileExtension,mime:ValidMimeType})=>{
+                if(!fileExtAndMimeType) return of(false); //txt , svg ... are not supported so it will return undefined
                 
+                return of(validFileExtension.includes(fileExtAndMimeType.ext) && validMimeType.includes(fileExtAndMimeType.mime))
             }
         )
     )
+}
+
+export const removeFile = (path):void=>{
+    try{
+        fs.unlinkSync(path);
+    }catch(err){
+        console.error(err);
+    }
 }

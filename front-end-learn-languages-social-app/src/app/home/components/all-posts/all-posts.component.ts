@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, SimpleChange, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, ModalController } from '@ionic/angular';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { User } from 'src/app/auth/models/user.model';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Post } from '../../models/Post';
 import { PostService } from '../../services/post.service';
@@ -20,6 +21,7 @@ export class AllPostsComponent implements OnInit {
   numberOfPosts = 5;
   offset = 0;
   counter = 1;
+  private userSubscription:Subscription;
 
   userId$ = new BehaviorSubject<number>(null)
   
@@ -30,10 +32,22 @@ export class AllPostsComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+     this.userSubscription = this.authService.userStream.subscribe(
+      (user:User)=>{
+        this.allLoadedPosts.forEach((post:Post,index:number)=>{
+          //if the user changes his profil picture for example the update should be shown instantly
+          if(user?.imagePath && post.author.sub === user.sub){
+            this.allLoadedPosts[index]['fullImagePath'] = this.authService.getFullImagePath(user.imagePath);
+          }
+        })
+      }
+     )
+
      this.getPosts(null)
      this.authService.getUserId.pipe(take(1)).subscribe((userId:number)=>{
       this.userId$.next(userId);
      })
+
   }
   ngOnChanges(changes){
     console.log(changes)
@@ -50,7 +64,17 @@ export class AllPostsComponent implements OnInit {
       event.target.disabled = true;
     }
     this.postService.getSelectedPosts({offset:this.offset,limit:this.numberOfPosts}).subscribe((posts:Post[])=>{
-      this.allLoadedPosts = [...this.allLoadedPosts,...posts];
+      this.allLoadedPosts = [...this.allLoadedPosts,
+        ...posts.map(post=>{
+          const authorHasImage =  !!post.author?.imagePath;
+          let fullImagePath = this.authService.getDefaultFullImagePath();
+          if(authorHasImage){
+            fullImagePath = this.authService.getFullImagePath(post.author.imagePath);
+          }
+          const newPost = {...post,fullImagePath}
+          return newPost;
+        })
+      ];
       if(event){ 
         event.target.complete()
         console.log("completed!!!")

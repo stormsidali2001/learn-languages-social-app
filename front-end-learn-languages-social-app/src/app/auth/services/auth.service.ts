@@ -51,6 +51,16 @@ export class AuthService {
         )
       )
     }
+    get getUserId():Observable<number>{
+      return this.userS.asObservable()
+      .pipe(
+        switchMap(
+          (user:User)=>{
+            return of(user.sub)
+          }
+        )
+      )
+    }
 
     register(newUser:CreateUser):Observable<User>{
       return this.http.post<User>(`${environment.baseApiUrl}/auth/register`,newUser,this.httpOptions).pipe(

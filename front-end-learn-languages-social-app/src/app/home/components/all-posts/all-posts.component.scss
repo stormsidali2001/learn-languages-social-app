@@ -47,4 +47,17 @@
         border-right: 16px solid #f3f2ef;
         z-index: 2;
     }
+    .action-icons{
+       
+        display: flex;
+        justify-content: end;
+        column-gap: 7px;
+        padding: 0 10px;
+        text-align: right;
+        ion-icon{
+            margin-top: -32px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    }
 }

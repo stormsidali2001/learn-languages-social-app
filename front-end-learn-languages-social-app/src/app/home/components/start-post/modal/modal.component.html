@@ -1,6 +1,6 @@
 <div>
   <div class="heading ion-padding">
-      <ion-text>Create a post</ion-text>
+      <ion-text>{{postId ? 'Edit' : 'Create'}} a post</ion-text>
       <ion-button (click)="onDismiss()" size="small" color="dark" fill="clear" shape="round">
           <ion-icon slot="icon-only" size="large" name="close-outline"></ion-icon>
       </ion-button>
@@ -46,7 +46,7 @@
         <ion-icon class="ion-padding-none"  name="chatbox-ellipses-outline"></ion-icon>
         <ion-text class="view-status">Anyone</ion-text>
       </ion-button>
-      <ion-button type="submit"  class="ion-margin">Post</ion-button>
+      <ion-button type="submit"  class="ion-margin">{{postId ? 'Edit' : 'Post'}}</ion-button>
     </div>
   </form>
 </div>

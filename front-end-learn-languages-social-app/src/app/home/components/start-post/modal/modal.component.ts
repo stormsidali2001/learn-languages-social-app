@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 
@@ -8,7 +8,8 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
-  @ViewChild('form') form:NgForm 
+  @ViewChild('form') form:NgForm;
+  @Input() postId?:number;
   constructor(public modalController:ModalController) {
    
    }

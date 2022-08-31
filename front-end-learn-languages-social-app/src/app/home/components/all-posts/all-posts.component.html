@@ -19,6 +19,10 @@
 
               </div>
             </ion-col>
+            <ion-col class="action-icons" *ngIf="(userId$ | async) === post.author.id">
+              <ion-icon color="dark"  name="create-outline" (click)="presentUpdate(post.id)"></ion-icon>
+              <ion-icon color="danger" name="trash-outline" (click)="deletePost(post.id)"></ion-icon>
+            </ion-col>
           </ion-row>
           <p class="post-body">
             {{post.body}}

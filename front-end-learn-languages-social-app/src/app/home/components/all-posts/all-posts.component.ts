@@ -1,7 +1,11 @@
 import { Component, Input, OnInit, SimpleChange, ViewChild } from '@angular/core';
-import { IonInfiniteScroll } from '@ionic/angular';
+import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { Post } from '../../models/Post';
 import { PostService } from '../../services/post.service';
+import { ModalComponent } from '../start-post/modal/modal.component';
 
 @Component({
   selector: 'app-all-posts',
@@ -16,11 +20,20 @@ export class AllPostsComponent implements OnInit {
   numberOfPosts = 5;
   offset = 0;
   counter = 1;
+
+  userId$ = new BehaviorSubject<number>(null)
   
-  constructor(private postService:PostService) { }
+  constructor(
+    private postService:PostService,
+    private authService:AuthService,
+    public modalController:ModalController
+    ) { }
 
   ngOnInit() {
      this.getPosts(null)
+     this.authService.getUserId.pipe(take(1)).subscribe((userId:number)=>{
+      this.userId$.next(userId);
+     })
   }
   ngOnChanges(changes){
     console.log(changes)
@@ -52,6 +65,34 @@ export class AllPostsComponent implements OnInit {
   loadData(event){
     console.log(event)
     this.getPosts(event)
+  }
+  async presentUpdate(postId:number){
+    console.log('edit post')
+    const modal = await this.modalController.create({
+      component:ModalComponent,
+      cssClass:'my-custom-class2',
+      componentProps:{
+        postId,
+      }
+    });
+    await modal.present();
+    const {data,role} = await modal.onDidDismiss();
+    if(!data) return;
+    const newPostBody = data.post.body;
+    console.log('new body',newPostBody, this.allLoadedPosts)
+    this.postService.updatePost(postId,newPostBody).subscribe(()=>{
+      const postIndex = this.allLoadedPosts.findIndex(p=>p.id === postId);
+      console.log(postIndex)
+      this.allLoadedPosts[postIndex].body = newPostBody;
+    })
+    console.log('modal data:',data,'role',role)
+    console.log(role)
+
+  }
+  deletePost(postId:number){
+    this.postService.deletePost(postId).subscribe(()=>{
+      this.allLoadedPosts = this.allLoadedPosts.filter(p=>p.id!== postId)
+    })
   }
 
 }

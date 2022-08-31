@@ -61,6 +61,51 @@ export class AuthService {
         )
       )
     }
+    get userStream():Observable<User>{
+      return this.userS.asObservable();
+    }
+    get imageFullImagePath():Observable<string>{
+      return this.userS.asObservable().pipe(
+        switchMap( (user:User)=>{
+          const authorHasImage = !!user.imagePath;
+          let fullImagePath = this.getDefaultFullImagePath();
+          if(authorHasImage){
+            fullImagePath = this.getFullImagePath(user.imagePath);
+          }
+          return of(fullImagePath);
+
+        })
+      )
+    }
+  
+    get userFullName():Observable<string>{
+      return this.userS.asObservable().pipe(
+        switchMap(
+          (user:User)=>{
+            const fullName = user.firstName + ' ' + user.lastName;
+            return of(fullName);
+          }
+        )
+      )
+    }
+    updateUserImagePath(imagePath:string):Observable<User>{
+      return this.userS.pipe(
+        take(1),
+        map((user:User)=>{
+          user.imagePath = imagePath;
+          this.userS.next(user);
+          return user;
+        })
+      )
+    }
+    
+    getDefaultFullImagePath():string{
+      return `${environment.baseApiUrl}/feed/image-name/blank-profile-picture.png`
+    }
+    getFullImagePath(imageName:string):string{
+      return `${environment.baseApiUrl}/feed/image-name/${imageName}`
+    }
+
 
     register(newUser:CreateUser):Observable<User>{
       return this.http.post<User>(`${environment.baseApiUrl}/auth/register`,newUser,this.httpOptions).pipe(
@@ -107,5 +152,23 @@ export class AuthService {
         Preferences.remove({key:'token'})
         this.router.navigateByUrl('/auth');
     }
-
+    getUserImage(){
+      return this.http.get(`${environment.baseApiUrl}/users/image`).pipe(take(1))
+    }
+    getUserImageName():Observable<{imageName:string}>{
+      return this.http.get<{imageName:string}>(`${environment.baseApiUrl}/users/image`).pipe(take(1))
+    }
+    uploadUserImage(formData:FormData):Observable<{modifiedFileName:string}>{
+       return this.http.post<{modifiedFileName:string}>(`${environment.baseApiUrl}/users/upload`,formData)
+       .pipe(
+        tap(
+          ({modifiedFileName})=>{
+            let user = this.userS.value;
+            user.imagePath = modifiedFileName;
+            this.userS.next(user);
+          }
+        )
+      )
+    } 
+  
 }

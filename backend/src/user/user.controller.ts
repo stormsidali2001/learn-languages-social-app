@@ -52,6 +52,18 @@ export class UserController{
         )
     }
 
+    @UseGuards(AccessTokenJwtGuard)
+    @Get('image-name')
+    findImageName(@Req() req , @Res() res):Observable<{imageName:string}>{
+        const userId = req.user.sub;
+
+        return this.userService.findProfileImagePath(userId).pipe(
+            switchMap((imagePath:string)=>{
+                return of({imageName:imagePath})
+            })
+        )
+    }
+
 
 }
 

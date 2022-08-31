@@ -24,7 +24,7 @@ export class ProfileSummaryComponent implements OnInit ,OnDestroy{
   userFullImagePath:string;
   fullName$ = new BehaviorSubject<string>(null);
   fullName = '';
-  private userSubscription:Subscription;
+  private imagePathSubscription:Subscription;
   bannerColors:BannerColors ={
     color1:'#a0b4b7',
     color2:'#dbe7e9',
@@ -36,7 +36,7 @@ export class ProfileSummaryComponent implements OnInit ,OnDestroy{
 
   constructor(private authService:AuthService) { }
   ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
+    this.imagePathSubscription.unsubscribe();
   }
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class ProfileSummaryComponent implements OnInit ,OnDestroy{
       this.bannerColors = this.getBannerColors(role);
     });
 
-    this.userSubscription = this.authService.imageFullImagePath.subscribe((fullImagePath:string)=>{
+    this.imagePathSubscription = this.authService.imageFullImagePath.subscribe((fullImagePath:string)=>{
       this.userFullImagePath = fullImagePath;
     })
 

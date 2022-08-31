@@ -1,7 +1,7 @@
 <ion-card>
   <ion-card-header>
     <ion-avatar>
-      <ion-img src="../../../../assets/sidali.jpg"></ion-img>
+      <ion-img *ngIf="userFullImagePath" [src]="userFullImagePath"></ion-img>
     </ion-avatar>
     <ion-button shape="round" fill="outline" color="medium" (click)="presentModal()">
       <!-- cuz by default the content is centered iside an ion button -->

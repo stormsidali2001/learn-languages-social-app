@@ -15,11 +15,9 @@ export class PostService {
       tap(({imageName})=>{
         console.log("image name: ",imageName)
             this.authService.updateUserImagePath(imageName || 'blank-profile-picture.png').subscribe(()=>{
-              alert()
             });
       })
     ).subscribe(()=>{
-      alert()
     })
   }
   private httpOptions :{headers:HttpHeaders} = {

@@ -10,12 +10,12 @@
     <ion-row class="ion-justify-content-start">
       <ion-col size="auto">
           <ion-avatar>
-            <ion-img src="../../../../../assets/sidali.jpg"></ion-img>
+            <ion-img  [src]="userFullImagePath"></ion-img>
           </ion-avatar>
       </ion-col>
       <ion-col>
         <div>
-          <ion-text>Assoul Sidali</ion-text>
+          <ion-text>{{fullName}}</ion-text>
         </div>
         <ion-button size="small" shape="round" fill="outline" color="medium">
           <ion-icon color="dark" name="globe-outline"></ion-icon>

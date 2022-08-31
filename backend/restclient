@@ -38,10 +38,14 @@ POST http://localhost:8080/api/auth/login
 Content-Type:application/json
 
 {
-    "email":"assoulsidali1@gmail.com",
+    "email":"assoulsidali@gmail.com",
     "password":"123456"
 }
 
 
 ### users--------------------------------------------
 GET http://localhost:8080/api/users
+
+###images
+GET http://localhost:8080/api/users/image-name
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InN1YiI6MSwiZW1haWwiOiJhc3NvdWxzaWRhbGlAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJmaXJzdE5hbWUiOiJzaWRhbGkiLCJsYXN0TmFtZSI6IkFzc291bCJ9LCJpYXQiOjE2NjE5NzI0NzgsImV4cCI6MTY2MjY5MjQ3OH0.eVOwR2HbIj0tWeSgWNjkFthtYnclPGZW9pP4YHYeGgY

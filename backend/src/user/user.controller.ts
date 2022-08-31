@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { join } from "path";
-import { from, Observable, of, switchMap } from "rxjs";
+import { from, map, Observable, of, switchMap } from "rxjs";
 import { AccessTokenJwtGuard } from "../auth/guards/access-token-jwt-guard";
 import { UserEntity } from "../core/entities/user.entity";
 import { UpdateResult } from "typeorm";
@@ -23,17 +23,21 @@ export class UserController{
     @UseGuards(AccessTokenJwtGuard)
     @Post('upload')
     @UseInterceptors(FileInterceptor('file',imageStorageConfig))
-    uploadImage(@UploadedFile() file:Express.Multer.File,@Req() req):Observable<UpdateResult | {error:string}>{
+    uploadImage(@UploadedFile() file:Express.Multer.File , @Req() req):Observable<{modifiedFileName:string} | {error:string}>{
         const fileName = file.filename;
         if(!fileName) return of({error:"file must be a png , jpg/jpeg"});
 
         const imageDirectoryPath = join(process.cwd(),'images');
-        const fullImagePath = join(imageDirectoryPath+'/'+file.filename);
+        const fullImagePath = join(imageDirectoryPath + '/' + file.filename);
         return isFileExtensionSafe(fullImagePath).pipe(
             switchMap((safe:boolean)=>{
                 if(safe){
                     const userId = req.user.sub;
-                    return this.userService.updateProfileImage(userId,fullImagePath);
+                    return this.userService.updateProfileImage(userId,file.filename).pipe(
+                        map(()=>({
+                            modifiedFileName:file.filename
+                        }))
+                    )
                 }
                 removeFile(fullImagePath);
                 return of({error:'File content does not match extension'});
@@ -54,12 +58,13 @@ export class UserController{
 
     @UseGuards(AccessTokenJwtGuard)
     @Get('image-name')
-    findImageName(@Req() req , @Res() res):Observable<{imageName:string}>{
+    findImageName(@Req() req ):Observable<{imageName:string}>{
         const userId = req.user.sub;
 
         return this.userService.findProfileImagePath(userId).pipe(
-            switchMap((imagePath:string)=>{
-                return of({imageName:imagePath})
+            map((imagePath:string)=>{
+                console.warn('image path',imagePath)
+                return {imageName:imagePath};
             })
         )
     }

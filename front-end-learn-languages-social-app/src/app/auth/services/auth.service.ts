@@ -64,20 +64,7 @@ export class AuthService {
     get userStream():Observable<User>{
       return this.userS.asObservable();
     }
-    get imageFullImagePath():Observable<string>{
-      return this.userS.asObservable().pipe(
-        switchMap( (user:User)=>{
-          const authorHasImage = !!user.imagePath;
-          let fullImagePath = this.getDefaultFullImagePath();
-          if(authorHasImage){
-            fullImagePath = this.getFullImagePath(user.imagePath);
-          }
-          return of(fullImagePath);
-
-        })
-      )
-    }
-  
+ 
     get userFullName():Observable<string>{
       return this.userS.asObservable().pipe(
         switchMap(
@@ -88,23 +75,8 @@ export class AuthService {
         )
       )
     }
-    updateUserImagePath(imagePath:string):Observable<User>{
-      return this.userS.pipe(
-        take(1),
-        map((user:User)=>{
-          user.imagePath = imagePath;
-          this.userS.next(user);
-          return user;
-        })
-      )
-    }
-    
-    getDefaultFullImagePath():string{
-      return `${environment.baseApiUrl}/feed/image-name/blank-profile-picture.png`
-    }
-    getFullImagePath(imageName:string):string{
-      return `${environment.baseApiUrl}/feed/image-name/${imageName}`
-    }
+  
+  
 
 
     register(newUser:CreateUser):Observable<User>{
@@ -152,23 +124,60 @@ export class AuthService {
         Preferences.remove({key:'token'})
         this.router.navigateByUrl('/auth');
     }
-    getUserImage(){
-      return this.http.get(`${environment.baseApiUrl}/users/image`).pipe(take(1))
-    }
-    getUserImageName():Observable<{imageName:string}>{
-      return this.http.get<{imageName:string}>(`${environment.baseApiUrl}/users/image`).pipe(take(1))
-    }
+    //image methods
+   
     uploadUserImage(formData:FormData):Observable<{modifiedFileName:string}>{
        return this.http.post<{modifiedFileName:string}>(`${environment.baseApiUrl}/users/upload`,formData)
        .pipe(
         tap(
           ({modifiedFileName})=>{
             let user = this.userS.value;
-            user.imagePath = modifiedFileName;
+            console.log('md file',modifiedFileName)
+            user.imagePath =  modifiedFileName;
             this.userS.next(user);
           }
         )
       )
     } 
+    updateUserImagePath(imagePath:string):Observable<User>{
+      return this.userS.pipe(
+        take(1),
+        map((user:User)=>{
+          user.imagePath = imagePath;
+          this.userS.next(user);
+          return user;
+        })
+      )
+    }
+    get imageFullImagePath():Observable<string>{
+      return this.userS.asObservable().pipe(
+        switchMap( (user:User)=>{
+          const authorHasImage = !!user.imagePath;
+          let fullImagePath = this.getDefaultFullImagePath();
+          if(authorHasImage){
+            fullImagePath = this.getFullImagePath(user.imagePath);
+          }
+          return of(fullImagePath);
+
+        })
+      )
+    }
+  
+    getUserImage(){
+      return this.http.get(`${environment.baseApiUrl}/users/image`).pipe(take(1))
+    }
+    getUserImageName():Observable<{imageName:string}>{
+     return this.http.get<{imageName:string}>(`${environment.baseApiUrl}/users/image-name`).pipe(tap((res)=>{
+      console.log('.......................',res)
+     }),take(1))
+   
+    }
+    //utils
+    getDefaultFullImagePath():string{
+      return `${environment.baseApiUrl}/feed/image/blank-profile-picture.png`
+    }
+    getFullImagePath(imageName:string):string{
+      return `${environment.baseApiUrl}/feed/image/${imageName}`
+    }
   
 }
